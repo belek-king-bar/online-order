@@ -11,7 +11,7 @@ class Food(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название блюда')
     description = models.TextField(max_length=2000, null=True, blank=True, verbose_name='Описание')
     photo = models.ImageField(verbose_name='Фотография')
-    price = models.DecimalField(max_digits='8', decimal_places=2, verbose_name='Цена')
+    price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name='Цена')
 
 class Order(models.Model):
     STATUS_NEW = 'new'
@@ -31,6 +31,9 @@ class Order(models.Model):
     contact_phone = models.CharField(max_length=20, null=True, blank=True, verbose_name='Телефон')
     contact_name = models.CharField(max_length=50, verbose_name='Имя клиента')
     delivery_address = models.CharField(max_length=200, verbose_name='Адрес')
+    status = models.CharField(max_length=20, default=STATUS_NEW, verbose_name='Статус', choices=STATUS_CHOICES)
+    operator = models.ForeignKey(User, related_name='orders', null=True, blank=True, verbose_name='Оператор', on_delete=models.PROTECT)
+    courier = models.ForeignKey(User, related_name='delivered', null=True, blank=True, verbose_name='Курьер', on_delete=models.PROTECT)
 
 
 
