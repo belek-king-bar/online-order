@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView, View
+from django.http import HttpResponseRedirect
 from webapp.models import User, Order, Food, OrderFood
 from webapp.forms import OrderFoodForm, FoodForm, OrderForm
 from django.urls import reverse_lazy, reverse
@@ -21,24 +22,61 @@ class OrderCreateView(CreateView):
     model = Order
     form_class = OrderForm
     template_name = 'order_create.html'
-    success_url = reverse_lazy('order_list')
+
+    def get_success_url(self):
+        return reverse('order_detail', kwargs={'pk': self.object.pk})
 
 
 class OrderUpdateView(UpdateView):
-    model = OrderForm
+    model = Order
     form_class = OrderForm
     template_name = 'order_update.html'
 
     def get_success_url(self):
         return reverse('order_detail', kwargs={'pk': self.object.pk})
 
+    def form_valid(self, form):
+        form.instance.order = get_object_or_404(Order, pk=self.kwargs['pk'])
+        return super().form_valid(form)
 
-class OrderDeleteView(DeleteView):
+
+class OrderRejectView(DeleteView):
     model = Order
-    template_name = 'order_delete.html'
-    success_url = reverse_lazy('order_list')
+    template_name = 'order_cancel.html'
+
+    def get_success_url(self):
+        return reverse('order_detail', kwargs={'pk': self.object.pk})
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.status = 'canceled'
+        self.object.save()
+        return HttpResponseRedirect(success_url)
 
 
+
+class OrderFoodCreateView(CreateView):
+    model = OrderFood
+    form_class = OrderFoodForm
+    template_name = 'order_food_create.html'
+
+    def get_success_url(self):
+        return reverse('order_detail', kwargs={'pk': self.object.order.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['order'] = Order.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
+    def form_valid(self, form):
+        form.instance.order = get_object_or_404(Order, pk=self.kwargs['pk'])
+        return super().form_valid(form)
+
+
+
+class OrderFoodDeleteView(DeleteView):
+    model = OrderFood
 
 
 class UserListView(ListView):

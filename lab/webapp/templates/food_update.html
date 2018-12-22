@@ -17,7 +17,7 @@
 {% block content %}
 
 <h1>Изменение статьи</h1>
-    <form action="{% url 'food_update' form.instance.pk %}" method="post">
+    <form action="{% url 'food_update' form.instance.pk %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary ml-3">Сохранить</button>
