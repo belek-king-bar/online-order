@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Заказать{% endblock %}
+{% block menu %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
+        </li>
+{% endblock %}
+{% block content %}
+    <h1>Заказ</h1>
+        {% if order.status == 'delivered' or order.status == 'on_way' %}
+            <h2>Заказ уже доставляется или доставлен!</h2>
+        {% else %}
+            <form action="{% url 'order_update' order.pk %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary ml-3">Сохранить</button>
+            </form>
+        {% endif %}
+{% endblock %}

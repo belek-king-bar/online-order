@@ -5,7 +5,7 @@
             <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_create' %}">Заказать</a>
+            <a class="nav-link" href="{% url 'order_create' %}">Заказать-часть1</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'food_list' %}">Меню</a>
@@ -18,8 +18,9 @@
                 {% for order_food in order.foods.all %}
                     <h4>{{ order_food.food.name }}</h4>
                 {% endfor %}
+                <h6>Имя заказчика: {{ order.contact_name }}</h6>
+                <h6>Статус: {{ order.get_status_display }}</h6>
             </a>
-                <h6>Курьер: {{ order.courier.first_name }}</h6>
             </div>
         {% endfor %}
 {% endblock %}
