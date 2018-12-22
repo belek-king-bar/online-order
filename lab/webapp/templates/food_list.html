@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Меню{% endblock %}
+{% block menu %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_create' %}">Заказать</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'food_create' %}">Добавить еду</a>
+        </li>
+
+{% endblock %}
+{% block content %}
+        {% for food in food_list %}
+            <div class="mb-4 mt-4">
+            <a href="{% url 'food_detail' food.pk %}">
+                    <h4>{{ food.name }}</h4>
+            </a>
+            </div>
+        {% endfor %}
+{% endblock %}

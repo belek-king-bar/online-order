@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Удалить еду{% endblock %}
+{% block content %}
+    <h1>Удаление еды</h1>
+    <h5>Вы уверены, что хотите удалить еду {{ food.name }} ?</h5>
+    <form action="{% url 'food_delete' food.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn, btn-primary">Удалить</button>
+    </form>
+{% endblock %}

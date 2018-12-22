@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Статья{% endblock %}
+{% block menu %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_create' %}">Заказать</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'food_list' %}">Меню</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'food_create' %}">Добавить еду</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'food_update' food.pk %}">Изменить еду</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'food_delete' food.pk %}">Удалить еду</a>
+        </li>
+{% endblock %}
+{% block content %}
+    <div>
+        <h1 class="text-center mt-4 mb-3">{{ food.name }}</h1>
+            <h4 class="mb-3">{{ food.description }}</h4>
+            <img src="{{ food.photo.url }}" alt="Картинка еды">
+            <h5 class="text-right">Цена: {{ food.price }}</h5>
+    </div>
+
+{% endblock %}
