@@ -4,7 +4,7 @@ from webapp.models import Food, OrderFood, Order
 class OrderFoodForm(forms.ModelForm):
     class Meta:
         model = OrderFood
-        exclude = ['order']
+        exclude = []
 
 
 class FoodForm(forms.ModelForm):

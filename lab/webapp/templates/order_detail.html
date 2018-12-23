@@ -5,13 +5,16 @@
             <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_create' %}">Заказать-часть1</a>
+            <a class="nav-link" href="{% url 'order_create' %}">Заполнять данные для заказа</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_food_create' order.pk %}">Заказать-часть2</a>
+            <a class="nav-link" href="{% url 'order_food_create' %}">Выбрать блюдо</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_update' order.pk %}">Изменить заказ</a>
+            <a class="nav-link" href="{% url 'order_update' order.pk %}">Изменить данные для заказа</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_food_update' order.pk %}">Изменить заказ</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'order_cancel' order.pk %}">Отменить заказ</a>

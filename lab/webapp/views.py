@@ -64,10 +64,14 @@ class OrderFoodCreateView(CreateView):
     def get_success_url(self):
         return reverse('order_detail', kwargs={'pk': self.object.order.pk})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['order'] = Order.objects.get(pk=self.kwargs.get('pk'))
-        return context
+
+class OrderFoodUpdateView(UpdateView):
+    model = OrderFood
+    form_class = OrderFoodForm
+    template_name = 'order_food_update.html'
+
+    def get_success_url(self):
+        return reverse('order_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         form.instance.order = get_object_or_404(Order, pk=self.kwargs['pk'])

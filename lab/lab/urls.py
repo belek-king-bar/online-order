@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from webapp.views import OrderListView, OrderDetailView, OrderCreateView, OrderUpdateView, OrderRejectView, FoodListView, FoodDetailView, FoodCreateView, FoodUpdateView, FoodDeleteView, OrderFoodCreateView
+from webapp.views import OrderListView, OrderDetailView, OrderCreateView, OrderUpdateView, OrderRejectView, FoodListView, FoodDetailView, FoodCreateView, FoodUpdateView, FoodDeleteView, OrderFoodCreateView, OrderFoodUpdateView
 
 
 urlpatterns = [
@@ -27,7 +27,8 @@ urlpatterns = [
     path('order/create', OrderCreateView.as_view(), name='order_create'),
     path('order/<int:pk>/reject', OrderRejectView.as_view(), name='order_cancel'),
     path('order/<int:pk>/update', OrderUpdateView.as_view(), name='order_update'),
-    path('order/<int:pk>/food/create', OrderFoodCreateView.as_view(), name='order_food_create'),
+    path('order/food/create', OrderFoodCreateView.as_view(), name='order_food_create'),
+    path('order/<int:pk>/food/update', OrderFoodUpdateView.as_view(), name='order_food_update'),
     path('foods', FoodListView.as_view(), name='food_list'),
     path('foods/<int:pk>', FoodDetailView.as_view(), name='food_detail'),
     path('foods/create', FoodCreateView.as_view(), name='food_create'),
