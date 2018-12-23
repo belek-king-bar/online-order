@@ -39,7 +39,7 @@ class Order(models.Model):
     courier = models.ForeignKey(User, related_name='delivered', null=True, blank=True, verbose_name='Курьер', on_delete=models.PROTECT)
 
     def __str__(self):
-        return "%s - %s, %s" % (self.foods.name, self.contact_name, self.get_status_display())
+        return "%s, %s" % (self.contact_name, self.get_status_display())
 
 class OrderFood(models.Model):
     order = models.ForeignKey(Order, related_name='foods', verbose_name='Заказ', on_delete=models.PROTECT)

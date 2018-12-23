@@ -55,6 +55,18 @@ class OrderRejectView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 
+class OrderDeliverView(View):
+    def get(self, *args, **kwargs):
+        object = get_object_or_404(Order, pk=kwargs['pk'])
+        success_url = reverse('order_detail', kwargs={'pk': object.pk})
+        if object.status == 'preparing':
+            object.status = 'on way'
+        elif object.status == 'on way':
+            object.status = 'delivered'
+        object.save()
+        return HttpResponseRedirect(success_url)
+
+
 
 class OrderFoodCreateView(CreateView):
     model = OrderFood
@@ -81,18 +93,6 @@ class OrderFoodUpdateView(UpdateView):
 
 class OrderFoodDeleteView(DeleteView):
     model = OrderFood
-
-
-class UserListView(ListView):
-    model = User
-    template_name = 'user_list.html'
-
-
-
-class UserDetailView(DetailView):
-    model = User
-    template_name = 'user_detail.html'
-
 
 
 class FoodListView(ListView):
@@ -125,9 +125,3 @@ class FoodUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('food_detail', kwargs={'pk': self.object.pk})
-
-
-class FoodDeleteView(DeleteView):
-    model = Food
-    template_name = 'food_delete.html'
-    success_url = reverse_lazy('food_list')

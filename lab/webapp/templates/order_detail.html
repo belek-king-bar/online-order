@@ -19,14 +19,17 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'order_cancel' order.pk %}">Отменить заказ</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_deliver' order.pk %}">Сменить статус заказа</a>
+        </li>
 {% endblock %}
 {% block content %}
     <div>
         <h1 class="text-center mt-4 mb-3">Заказ</h1>
-            <h4 class="mb-3">{{ order.contact_name }}, {{ order.contact_phone }}, {{ order.delivery_address }}</h4>
-            <div class="ml-3">
+            <h4 class="mb-5">Данные заказщика: {{ order.contact_name }}, {{ order.contact_phone }}, {{ order.delivery_address }}</h4>
+            <div class="ml-5">
                 {% for order_food in order.foods.all %}
-                    <h4>{{ order_food.food.name }} ---- {{ order_food.amount }}</h4>
+                    <h4>{{ order_food.food.name }} <p>{{ order_food.amount }}</p></h4>
                 {% endfor %}
             </div>
             <div class="text-right">
