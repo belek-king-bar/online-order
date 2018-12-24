@@ -63,6 +63,8 @@ class OrderDeliverView(View):
             object.status = 'on way'
         elif object.status == 'on way':
             object.status = 'delivered'
+        elif object.status == 'new':
+            object.status = 'preparing'
         object.save()
         return HttpResponseRedirect(success_url)
 
@@ -83,16 +85,20 @@ class OrderFoodUpdateView(UpdateView):
     template_name = 'order_food_update.html'
 
     def get_success_url(self):
-        return reverse('order_detail', kwargs={'pk': self.object.pk})
+        return reverse('order_detail', kwargs={'pk': self.object.order.pk})
 
     def form_valid(self, form):
-        form.instance.order = get_object_or_404(Order, pk=self.kwargs['pk'])
+        get_object_or_404(OrderFood, pk=self.kwargs['pk'])
         return super().form_valid(form)
-
 
 
 class OrderFoodDeleteView(DeleteView):
     model = OrderFood
+    form_class = OrderFoodForm
+    template_name = 'order_food_delete.html'
+
+    def get_success_url(self):
+        return reverse('order_detail', kwargs={'pk': self.object.order.pk})
 
 
 class FoodListView(ListView):
@@ -125,3 +131,6 @@ class FoodUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('food_detail', kwargs={'pk': self.object.pk})
+
+
+
