@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webauth',
     'webapp',
-    'webauth'
 ]
 
 MIDDLEWARE = [
@@ -125,3 +125,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
+
+from django.urls import reverse_lazy
+
+LOGIN_URL = reverse_lazy('webauth:login')

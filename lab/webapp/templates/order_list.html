@@ -1,23 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}Статьи{% endblock %}
 {% block menu %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_create' %}">Заполнять данные для заказа</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_food_create' %}">Выбрать блюдо</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'food_list' %}">Меню</a>
-        </li>
+        {% if perms.webapp.add_order %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'webapp:order_create' %}">Заполнять данные для заказа</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'webapp:order_food_create' %}">Выбрать блюдо</a>
+            </li>
+        {% endif %}
 {% endblock %}
 {% block content %}
         {% for order in order_list %}
             <div class="mb-4 mt-4">
-            <a href="{% url 'order_detail' order.pk %}">
+            <a href="{% url 'webapp:order_detail' order.pk %}">
                 {% for order_food in order.foods.all %}
                     <h4>{{ order_food.food.name }}</h4>
                 {% endfor %}

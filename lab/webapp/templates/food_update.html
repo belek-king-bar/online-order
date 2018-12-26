@@ -2,22 +2,16 @@
 {% block title %}Статья{% endblock %}
 {% block menu %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
+            <a class="nav-link" href="{% url 'webapp:order_create' %}">Заказать</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_create' %}">Заказать</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'food_list' %}">Меню</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'food_create' %}">Добавить еду</a>
+            <a class="nav-link" href="{% url 'webapp:food_create' %}">Добавить еду</a>
         </li>
 {% endblock %}
 {% block content %}
 
 <h1>Изменение статьи</h1>
-    <form action="{% url 'food_update' form.instance.pk %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'webapp:food_update' form.instance.pk %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary ml-3">Сохранить</button>

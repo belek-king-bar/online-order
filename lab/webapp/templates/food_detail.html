@@ -1,18 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Статья{% endblock %}
 {% block menu %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'food_list' %}">Меню</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'food_create' %}">Добавить еду</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'food_update' food.pk %}">Изменить еду</a>
-        </li>
+        {% if perms.webapp.add_food %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'webapp:food_create' %}">Добавить еду</a>
+            </li>
+        {% elif perms.webapp.change_food %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'webapp:food_update' food.pk %}">Изменить еду</a>
+            </li>
+        {% endif %}
 {% endblock %}
 {% block content %}
     <div>

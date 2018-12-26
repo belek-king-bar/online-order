@@ -1,24 +1,25 @@
 {% extends 'base.html' %}
 {% block title %}Меню{% endblock %}
 {% block menu %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_list' %}">Список заказов</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_create' %}">Заполнять данные для заказа</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'order_food_create' %}">Выбрать блюдо</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'food_create' %}">Добавить еду</a>
-        </li>
+        {% if perms.webapp.add_order %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'webapp:order_create' %}">Заполнять данные для заказа</a>
+            </li>
+        {% elif perms.webapp.add_orderfood %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'webapp:order_food_create' %}">Выбрать блюдо</a>
+            </li>
+        {% elif perms.webapp.add_food %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'webapp:food_create' %}">Добавить еду</a>
+            </li>
+        {% endif %}
 
 {% endblock %}
 {% block content %}
         {% for food in food_list %}
             <div class="mb-4 mt-4">
-            <a href="{% url 'food_detail' food.pk %}">
+            <a href="{% url 'webapp:food_detail' food.pk %}">
                     <h4>{{ food.name }}</h4>
             </a>
             </div>
