@@ -5,7 +5,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'webapp:food_create' %}">Добавить еду</a>
             </li>
-        {% elif perms.webapp.change_food %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'webapp:food_update' food.pk %}">Изменить еду</a>
             </li>

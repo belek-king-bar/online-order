@@ -14,7 +14,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'webapp:order_cancel' order.pk %}">Отменить заказ</a>
             </li>
-        {% elif perms.webapp.deliver_order %}
+        {% endif %}
+        {% if perms.webapp.deliver_order %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'webapp:order_deliver' order.pk %}">Взять заказ</a>
             </li>
@@ -29,7 +30,6 @@
                     <h4>{{ order_food.food.name }} <p>{{ order_food.amount }}</p>
                         {% if perms.webapp.change_orderfood %}
                             <a href="{% url 'webapp:order_food_update' order_food.pk %}"><i class="fas fa-eye-dropper ml-3"></i></a>
-                        {% elif perms.webapp.delete_orderfood %}
                             <a href="{% url 'webapp:order_food_delete' order_food.pk %}"><i class="fas fa-trash-alt ml-3"></i></a>
                         {% endif %}
                     </h4>

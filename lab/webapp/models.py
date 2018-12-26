@@ -48,6 +48,6 @@ class Order(models.Model):
 
 
 class OrderFood(models.Model):
-    order = models.ForeignKey(Order, related_name='foods', verbose_name='Заказ', on_delete=models.PROTECT)
+    order = models.ForeignKey(Order, related_name='foods', verbose_name='Заказ', on_delete=models.CASCADE)
     food = models.ForeignKey(Food, related_name='+', verbose_name='Блюдо', on_delete=models.PROTECT)
     amount = models.IntegerField(verbose_name='Количество')

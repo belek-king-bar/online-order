@@ -29,6 +29,10 @@ class OrderCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('webapp:order_detail', kwargs={'pk': self.object.pk})
 
+    def form_valid(self, form):
+        form.instance.operator = self.request.user
+        return super().form_valid(form)
+
 
 
 class OrderUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -71,10 +75,14 @@ class OrderDeliverView(PermissionRequiredMixin, View):
         success_url = reverse('webapp:order_detail', kwargs={'pk': object.pk})
         if object.status == 'preparing':
             object.status = 'on way'
+            object.courier = self.request.user
+            object.save()
         elif object.status == 'on way':
-            object.status = 'delivered'
-        object.save()
+            if object.courier == self.request.user:
+                object.status = 'delivered'
+                object.save()
         return HttpResponseRedirect(success_url)
+
 
 
 
