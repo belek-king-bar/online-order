@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View, FormView
 from django.http import HttpResponseRedirect, JsonResponse
-from webapp.models import  Order, Food, OrderFood
+from webapp.models import Order, Food, OrderFood
 from webapp.forms import OrderFoodForm, FoodForm, OrderForm
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
@@ -100,8 +100,8 @@ class OrderFoodCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
             'food_name': order_food.food.name,
             'food_pk': order_food.food.pk,
             'amount': order_food.amount,
-            'order_pk': order_food.order.pk,
-            'pk': order_food.pk
+            'pk': order_food.pk,
+            'edit_url': reverse('order_food_update', kwargs={'pk': order_food.pk})
         })
 
     def form_invalid(self, form):
@@ -121,7 +121,6 @@ class OrderFoodUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateVie
             'food_name': order_food.food.name,
             'food_pk': order_food.food.pk,
             'amount': order_food.amount,
-            'order_pk': order_food.order.pk,
             'pk': order_food.pk
         })
 

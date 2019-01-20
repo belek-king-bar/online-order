@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block title %}Статья{% endblock %}
 {% block menu %}
         {% if perms.webapp.add_order %}
@@ -6,7 +7,7 @@
                 <a class="nav-link" href="{% url 'webapp:order_create' %}">Заполнять данные для заказа</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#food_edit_modal">Выбрать блюдо</a>
+                <a class="nav-link" href="{% url 'webapp:order_food_create' order.pk %}" id="order_food_add_link">Выбрать блюдо</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'webapp:order_update' order.pk %}">Изменить данные для заказа</a>
@@ -27,7 +28,9 @@
             <h4 class="mb-5">Данные заказщика: {{ order.contact_name }}, {{ order.contact_phone }}, {{ order.delivery_address }}</h4>
             <ul class="ml-5" id="order_food_list">
                 {% for order_food in order.foods.all %}
-                    <li id="order_food_{{ order_food.pk }}"><span id="order_food_name_{{ order_food.pk }}" data-food_pk="{{ order_food.food.pk }}">{{ order_food.food.name }}</span>: <span id="order_food_amount_{{ order_food.pk }}">{{ order_food.amount }}</span>
+                    <li id="order_food_{{ order_food.pk }}">
+                        <span id="order_food_name_{{ order_food.pk }}" data-food_pk="{{ order_food.food.pk }}">{{ order_food.food.name }}</span>:
+                        <span id="order_food_amount_{{ order_food.pk }}">{{ order_food.amount }}</span> шт.
                         {% if perms.webapp.change_orderfood %}
                             <a class="edit_link" href="{% url 'webapp:order_food_update' order_food.pk %}" data-pk="{{ order_food.pk }}"><i class="fas fa-eye-dropper ml-3"></i></a>
                             <a href="{% url 'webapp:order_food_delete' order_food.pk %}"><i class="fas fa-trash-alt ml-3"></i></a>
