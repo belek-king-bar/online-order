@@ -1,5 +1,5 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
-from django.http import HttpResponseRedirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View, FormView
+from django.http import HttpResponseRedirect, JsonResponse
 from webapp.models import  Order, Food, OrderFood
 from webapp.forms import OrderFoodForm, FoodForm, OrderForm
 from django.urls import reverse
@@ -14,10 +14,11 @@ class OrderListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'webapp.view_order'
 
 
-class OrderDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class OrderDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView, FormView):
     model = Order
     template_name = 'order_detail.html'
     permission_required = 'webapp.view_order'
+    form_class = OrderFoodForm
 
 
 class OrderCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -89,26 +90,47 @@ class OrderDeliverView(PermissionRequiredMixin, View):
 class OrderFoodCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = OrderFood
     form_class = OrderFoodForm
-    template_name = 'order_food_create.html'
     permission_required = 'webapp.add_orderfood'
 
-    def get_success_url(self):
-        return reverse('webapp:order_detail', kwargs={'pk': self.object.order.pk})
+    def form_valid(self, form):
+        order = get_object_or_404(Order, pk=self.kwargs.get('pk'))
+        form.instance.order_pk = order
+        order_food = form.save()
+        return JsonResponse({
+            'food_name': order_food.food.name,
+            'food_pk': order_food.food.pk,
+            'amount': order_food.amount,
+            'order_pk': order_food.order.pk,
+            'pk': order_food.pk
+        })
 
-
+    def form_invalid(self, form):
+        return JsonResponse({
+            'errors': form.errors
+        }, status='422')
 
 class OrderFoodUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = OrderFood
     form_class = OrderFoodForm
-    template_name = 'order_food_update.html'
-    permission_required = 'webapp.change_orderfood'
+    permission_required = 'webapp.add_orderfood'
 
-    def get_success_url(self):
-        return reverse('webapp:order_detail', kwargs={'pk': self.object.order.pk})
 
     def form_valid(self, form):
-        get_object_or_404(OrderFood, pk=self.kwargs['pk'])
-        return super().form_valid(form)
+        order_food = form.save()
+        return JsonResponse({
+            'food_name': order_food.food.name,
+            'food_pk': order_food.food.pk,
+            'amount': order_food.amount,
+            'order_pk': order_food.order.pk,
+            'pk': order_food.pk
+        })
+
+
+    def form_invalid(self, form):
+        return JsonResponse({
+            'errors': form.errors
+        }, status='422')
+
 
 
 
