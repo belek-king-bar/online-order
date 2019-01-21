@@ -135,13 +135,22 @@ class OrderFoodUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateVie
 
 class OrderFoodDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = OrderFood
-    form_class = OrderFoodForm
-    template_name = 'order_food_delete.html'
     permission_required = 'webapp.delete_orderfood'
 
-    def get_success_url(self):
-        return reverse('webapp:order_detail', kwargs={'pk': self.object.order.pk})
+    def delete(self, request, *args, **kwargs):
+        delete_food = get_object_or_404(OrderFood, pk=self.kwargs.get('pk'))
+        pk = delete_food.pk
+        delete_food.delete()
+        return JsonResponse({
+            'pk': pk
+        })
 
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('webapp:order_detail',
+                       kwargs={'pk': get_object_or_404(OrderFood, pk=self.kwargs.get('pk')).order.pk})
 
 
 class FoodListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):

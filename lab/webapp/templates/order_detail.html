@@ -32,7 +32,7 @@
                         <span id="order_food_amount_{{ order_food.pk }}">{{ order_food.amount }}</span> шт.
                         {% if perms.webapp.change_orderfood %}
                             <a class="edit_link" href="{% url 'webapp:order_food_update' order_food.pk %}" data-pk="{{ order_food.pk }}">Изменить</a>
-                            <a href="{% url 'webapp:order_food_delete' order_food.pk %}">Удалить</a>
+                            <a class="delete_link" data-pk="{{ food.food.pk }}" href="{% url 'webapp:order_food_delete' order_food.pk %}">Удалить</a>
                         {% endif %}
                     </li>
                 {% endfor %}
@@ -278,6 +278,32 @@
 
             // настраиваем изменение блюд по клику на ссылки "Изменить"
             $('#order_food_list .edit_link').click(onOrderFoodUpdate);
+
+            $('#order_food_list .delete_link').click(onOrderFoodDelete);
         });
+
+
+        function onOrderFoodDelete(event) {
+            event.preventDefault();
+            let url = $(this).attr('href');
+
+            $.ajax ({
+                url: url,
+                success: onDeleteFoodSuccess,
+                error: onFormSubmitError,
+                method: 'GET'
+            })
+
+        }
+
+        function onDeleteFoodSuccess(response, status) {
+            console.log(response);
+            console.log(status);
+
+            let pk = response['pk'];
+            let foodLi = $('#order_food_' + pk);
+            foodLi.remove();
+
+        }
     </script>
 {% endblock %}
