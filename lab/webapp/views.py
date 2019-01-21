@@ -94,7 +94,7 @@ class OrderFoodCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
 
     def form_valid(self, form):
         order = get_object_or_404(Order, pk=self.kwargs.get('pk'))
-        form.instance.order_pk = order
+        form.instance.order = order
         order_food = form.save()
         return JsonResponse({
             'food_name': order_food.food.name,
