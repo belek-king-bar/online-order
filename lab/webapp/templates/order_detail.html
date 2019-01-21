@@ -96,7 +96,7 @@
                 .text('Изменить')
                 .click(onOrderFoodUpdate);
             let deleteLink = $('<a></a>')
-                .attr('href', '#')
+                .attr('href', response.delete_url)
                 .text('Удалить');
 
             newFoodLi
@@ -104,11 +104,9 @@
                 .append(foodNameSpan)
                 .append(': ')
                 .append(foodAmountSpan)
-                .append(' шт. (')
+                .append(' шт. ')
                 .append(editLink)
-                .append(' / ')
-                .append(deleteLink)
-                .append(')');
+                .append(deleteLink);
 
             // добавляем новый пункт в список
             $('#order_food_list').append(newFoodLi);
