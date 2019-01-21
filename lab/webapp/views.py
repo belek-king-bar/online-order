@@ -101,7 +101,7 @@ class OrderFoodCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
             'food_pk': order_food.food.pk,
             'amount': order_food.amount,
             'pk': order_food.pk,
-            'edit_url': reverse('order_food_update', kwargs={'pk': order_food.pk})
+            'edit_url': reverse('webapp:order_food_update', kwargs={'pk': order_food.pk})
         })
 
     def form_invalid(self, form):
