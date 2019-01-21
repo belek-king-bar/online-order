@@ -96,7 +96,10 @@
                 .text('Изменить')
                 .click(onOrderFoodUpdate);
             let deleteLink = $('<a></a>')
+                .addClass('delete_link')
                 .attr('href', response.delete_url)
+                .data('pk', response.pk)
+                .click(onOrderFoodDelete)
                 .text('Удалить');
 
             newFoodLi
@@ -289,17 +292,18 @@
                 url: url,
                 success: onDeleteFoodSuccess,
                 error: onFormSubmitError,
-                method: 'GET'
+                method: 'get'
             })
 
         }
 
         function onDeleteFoodSuccess(response, status) {
+            event.preventDefault();
+
             console.log(response);
             console.log(status);
 
-            let pk = response['pk'];
-            let foodLi = $('#order_food_' + pk);
+            let foodLi = $('#order_food_' + response.pk);
             foodLi.remove();
 
         }
